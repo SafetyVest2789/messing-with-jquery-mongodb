@@ -9,14 +9,14 @@ const PORT = 8000
 
 let db,
     dbConnectionStr = process.env.DB_STRING,
-    dbName = 'sample_mflix',
+    dbName = 'wines',
     collection
 
 MongoClient.connect(dbConnectionStr)
     .then(client => {
         console.log(`Connected to database`)
         db = client.db(dbName)
-        collection = db.collection('movies')
+        collection = db.collection('basic')
     })
 
 app.use(express.urlencoded({extended : true}))
@@ -30,7 +30,7 @@ app.get("/search", async (request,response) => {
                 "$search" : {
                     "autocomplete" : {
                         "query": `${request.query.query}`,
-                        "path": "title",
+                        "path": "name",
                         "fuzzy": {
                             "maxEdits":2,
                             "prefixLength": 3
